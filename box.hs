@@ -13,16 +13,18 @@ import Data.Vault.ST.Lazy
 
 
 data Link s a b =
-  forall e. Link
+  Link
     {
-       linkKey :: Key s (b, e)
-    ,  pushLink :: (a, e) -> (b, e)
+      pullLink :: Diag s b
+    , pushLink :: a -> Diag s b
     }
 
 
 instance Category (Link s) where
-  id = Link undefined id 
-  (Link k f) . (Link k' f') = 
+  id = Link undefined (return . const)
+  (Link mk f) . (Link mk' f') = Link mk' f'' where
+    f'' = do
+      
 
 type Diag s a = State (Vault s) a
 
